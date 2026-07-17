@@ -1,10 +1,10 @@
-from backend.work_session import WorkPeriod
-from datetime import datetime
+from backend.work_period import WorkPeriod
+from datetime import date
 
 class WorkDay:
 
-    def __init__(self, date: datetime):
-        self.date = date
+    def __init__(self, day: date):
+        self.day = day
 
         self.work_periods = []
         self.break_periods = []
