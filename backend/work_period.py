@@ -7,7 +7,7 @@ class PeriodError(Exception):
 
 class PeriodAlreadyEndedError(PeriodError):
     def __init__(self) -> None:
-        super().__init__("Work period has already ended")
+        super().__init__("Period has already ended")
 
 
 class EndBeforeStartError(PeriodError):
