@@ -58,6 +58,8 @@ class WorkSession:
         if self.active_period is None:
             raise SessionStateError("Session has no active period")
 
-        self.active_period.set_end(end_time)
+        final_period = self.active_period
+        final_period.set_end(end_time)
+
         self.end_time = end_time
         self.active_period = None
