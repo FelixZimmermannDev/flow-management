@@ -1,4 +1,3 @@
-from backend.work_period import WorkPeriod
 from datetime import date
 
 class WorkDay:
