@@ -1,33 +1,35 @@
 from datetime import datetime
 
 from backend.break_period import BreakPeriod
-from backend.work_period import (
-    WorkPeriod,
-    EndBeforeStartError,
-    PeriodAlreadyEndedError,
-)
+from backend.work_period import WorkPeriod
+
 
 class SessionStateError(Exception):
-    def __init__(self):
-        super().__init__("A break can only start while working.")
+    pass
+
+
+class SessionAlreadyEndedError(SessionStateError):
+    def __init__(self) -> None:
+        super().__init__("Session has already ended")
+
 
 class WorkSession:
 
-    def __init__(self, start_time):
+    def __init__(self, start_time: datetime):
         first_work_period = WorkPeriod(start_time)
 
         self.start_time = start_time
         self.end_time: datetime | None = None
 
-        self.work_periods = [first_work_period]
-        self.break_periods = []
+        self.work_periods: list[WorkPeriod] = [first_work_period]
+        self.break_periods: list[BreakPeriod] = []
 
-        self.active_period: WorkPeriod | BreakPeriod | None = None
+        self.active_period: WorkPeriod | BreakPeriod | None = first_work_period
 
-    #Break
+    # Break
     def start_break(self, break_start_time: datetime) -> None:
-        if not isinstance(self.active_period, WorkPeriod): #Is WorkPeriod stored in self.active_period?
-            raise SessionStateError()
+        if not isinstance(self.active_period, WorkPeriod):
+            raise SessionStateError("A break can only start while working")
 
         self.active_period.set_end(break_start_time)
 
@@ -36,24 +38,26 @@ class WorkSession:
 
         self.active_period = new_break_period
 
-    #Work
-    def resume_work(self, start_time: datetime):
+    # Work
+    def resume_work(self, work_start_time: datetime) -> None:
         if not isinstance(self.active_period, BreakPeriod):
-            raise SessionStateError()
+            raise SessionStateError("Work can only resume during a break")
 
-        self.active_period.set_end(start_time)
+        self.active_period.set_end(work_start_time)
 
-        new_work_period = WorkPeriod(start_time)
+        new_work_period = WorkPeriod(work_start_time)
         self.work_periods.append(new_work_period)
 
         self.active_period = new_work_period
 
-    #Helpers
+    # Helpers
     def set_end(self, end_time: datetime) -> None:
         if self.end_time is not None:
-            raise PeriodAlreadyEndedError()
+            raise SessionAlreadyEndedError()
 
-        if end_time < self.start_time:
-            raise EndBeforeStartError()
+        if self.active_period is None:
+            raise SessionStateError("Session has no active period")
 
+        self.active_period.set_end(end_time)
         self.end_time = end_time
+        self.active_period = None
