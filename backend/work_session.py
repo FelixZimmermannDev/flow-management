@@ -3,10 +3,8 @@ from datetime import datetime
 from backend.break_period import BreakPeriod
 from backend.work_period import WorkPeriod
 
-
 class SessionStateError(Exception):
     pass
-
 
 class SessionAlreadyEndedError(SessionStateError):
     def __init__(self) -> None:
