@@ -10,7 +10,6 @@ class SessionAlreadyEndedError(SessionStateError):
     def __init__(self) -> None:
         super().__init__("Session has already ended")
 
-
 class WorkSession:
 
     def __init__(self, start_time: datetime):
