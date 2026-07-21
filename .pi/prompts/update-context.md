@@ -10,6 +10,8 @@ Review whether durable project context must change after completed work or an ex
 
 Maintain project context as a concise representation of current truth, not as an append-only history or changelog. Update existing statements in place, replace obsolete direction, remove stale information, and consolidate repetition. If the inspected evidence contains no durable change, make no context edit.
 
+This command maintains persistent project files across sessions. It must not summarize the current Pi conversation or act as context-window compaction; Pi's built-in `/compact` owns that role.
+
 ## Allowed context files
 
 - `AGENTS.md` for stable project-specific instructions about how the agent should work;

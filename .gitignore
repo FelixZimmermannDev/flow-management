@@ -5,8 +5,3 @@ __pycache__/
 .pytest_cache/
 .env
 .nul
-
-# Project-local agent and architecture documentation
-/AGENTS.md
-/docs/
-/architecture.md
