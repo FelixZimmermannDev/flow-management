@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from backend.work_period import (
+from backend.time_period import (
     EndBeforeStartError,
     PeriodAlreadyEndedError,
     WorkPeriod,

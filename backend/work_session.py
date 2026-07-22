@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from backend.break_period import BreakPeriod
-from backend.work_period import WorkPeriod
+from backend.time_period import BreakPeriod, WorkPeriod
 
 class SessionStateError(Exception):
     pass
@@ -12,7 +11,7 @@ class SessionAlreadyEndedError(SessionStateError):
 
 class WorkSession:
 
-    def __init__(self, start_time: datetime):
+    def __init__(self, start_time: datetime) -> None:
         first_work_period = WorkPeriod(start_time)
 
         self.start_time = start_time

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class PeriodError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(message)
@@ -8,13 +9,14 @@ class PeriodAlreadyEndedError(PeriodError):
     def __init__(self) -> None:
         super().__init__("Period has already ended")
 
+
 class EndBeforeStartError(PeriodError):
     def __init__(self) -> None:
         super().__init__("End time cannot be before start time")
 
-class WorkPeriod:
 
-    def __init__(self, start_time: datetime):
+class Period:
+    def __init__(self, start_time: datetime) -> None:
         self.start_time = start_time
         self.end_time: datetime | None = None
 
@@ -26,3 +28,11 @@ class WorkPeriod:
             raise EndBeforeStartError()
 
         self.end_time = end_time
+
+
+class WorkPeriod(Period):
+    pass
+
+
+class BreakPeriod(Period):
+    pass

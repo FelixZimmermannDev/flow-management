@@ -13,11 +13,26 @@
 - For Clean Code teaching, code-quality reviews, or behavior-preserving refactoring, load the global `clean-code-coach` skill and apply the project-specific heuristics in `docs/architecture.md`.
 - Do not load detailed architecture context for unrelated questions or narrowly scoped syntax work.
 
-## Development boundaries
+## Project learning workflow
 
-- Work on one externally visible domain behavior at a time and use the guided workflow from the global `AGENTS.md`.
-- Use `pytest` for focused behavior tests.
-- Do not treat planned classes, empty files, or documentation as proof that behavior is implemented.
+- This project specializes the global guided workflow for Flow Management; use the more specific rules below when they differ.
+- Work on one externally visible domain behavior at a time. Prioritize translating ideas into explicit behavior, state changes, responsibilities, and design decisions over practicing Python syntax in isolation.
+- Begin with Felix's feature idea in plain language: what should become possible, what triggers it, and what should visibly change.
+- Before tests or implementation, clarify the required inputs, state read, state changed or result returned, invalid situations, and what must remain unchanged.
+- When a decision has multiple materially useful solutions, present only the relevant alternatives, their main trade-offs, and one recommended default for this project. Do not manufacture alternatives for routine details.
+- Use the review format as a behavior contract before implementation:
+  1. Main task of the function
+  2. Normal case + expected result
+  3. Edge case + expected result
+  4. What must remain unchanged
+- The agent writes focused `pytest` tests from the agreed contract. Felix reviews whether they express the intended behavior before production implementation begins.
+- Choose the implementation mode by learning value:
+  - For boilerplate, UI/framework integration, configuration, repetitive work, and familiar patterns, the agent implements directly.
+  - For new core domain behavior, Felix actively contributes the behavior model, conditions, pseudocode, comments, or a small skeleton; the agent may then translate it into complete code.
+  - Use occasional small first-hand implementations as deliberate practice, not as the default requirement for every domain function.
+  - If Felix is blocked or overwhelmed, the agent may provide the complete implementation and explain its decisive parts without exhausting a fixed hint ladder.
+- After implementation, verify understanding actively with one proportionate step: explain a state transition, predict an outcome, make a small change, add an edge case, or debug a bounded fault. Do not turn routine work into a quiz.
+- Run focused tests after each coherent change and broader tests when practical. Do not treat planned classes, empty files, or documentation as proof that behavior is implemented.
 
 ## Context maintenance
 
