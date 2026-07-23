@@ -1,11 +1,26 @@
-from datetime import date
+from datetime import date, datetime
+
+from backend.work_session import WorkSession
+
+
+class WorkDayStateError(Exception):
+    pass
+
+
+class ActiveSessionAlreadyExistsError(WorkDayStateError):
+    def __init__(self) -> None:
+        super().__init__("An active session already exists")
+
 
 class WorkDay:
-
-    def __init__(self, day: date):
+    def __init__(self, day: date) -> None:
         self.day = day
+        self.work_sessions: list[WorkSession] = []
 
-        self.work_sessions = []
+    def start_session(self, start_time: datetime) -> WorkSession:
+        if any(session.end_time is None for session in self.work_sessions):
+            raise ActiveSessionAlreadyExistsError()
 
-
-
+        session = WorkSession(start_time)
+        self.work_sessions.append(session)
+        return session
