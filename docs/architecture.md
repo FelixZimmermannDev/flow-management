@@ -12,7 +12,7 @@ Flow Management is a local Python application for tracking work time as work day
 - `WorkSession` starts with an active `WorkPeriod` and owns its work periods and break periods.
 - `WorkSession.start_break()` and `WorkSession.resume_work()` close the active period, create the next period, store it, and make it active.
 - `WorkSession.set_end()` closes the active period, records the session end, and clears the active period.
-- `WorkDay` currently stores a date and a list of work sessions but has no domain methods yet.
+- `WorkDay` stores a date and its work sessions. `start_session()` creates, stores, and returns a session while rejecting a second active session. `end_session()` finds the active session, delegates its state transition to `WorkSession.set_end()`, and returns the same session object.
 - `FlowManager` is currently a placeholder without implemented coordination behavior.
 
 ## Agreed architecture direction
@@ -41,7 +41,6 @@ Use these as proportional heuristics, not absolute rules:
 - Keep mutation and invalid states visible, especially when active periods and sessions change.
 - Keep each class focused on one coherent responsibility, but do not split code merely because it has grown by a few lines.
 - Accept small duplication until the shared concept is stable; do not create an abstraction only to satisfy DRY.
-- Use focused tests as readable examples of externally visible behavior rather than testing every helper.
 - Preserve comments that explain reasons, constraints, or unresolved domain decisions; avoid comments that merely narrate syntax.
 - Make the smallest behavior-preserving change and avoid unrelated cleanup.
 
@@ -49,7 +48,6 @@ Use these as proportional heuristics, not absolute rules:
 
 Do not treat these as settled without Felix's decision:
 
-- What happens when a second session is started while another session is still active?
 - How should sessions that cross midnight be assigned to work days?
 - What exact public operations should `FlowManager` expose?
 - When and how should SQLite entities relate `WorkDay`, `WorkSession`, and periods?
