@@ -38,3 +38,17 @@ class WorkDay:
 
         active_session.set_end(end_time)
         return active_session
+
+    def start_break(self, start_time: datetime) -> WorkSession:
+        active_session: WorkSession | None = None
+
+        for stored_session in self.work_sessions:
+            if stored_session.end_time is None:
+                active_session = stored_session
+                break
+
+        if active_session is None:
+            raise NoActiveSessionError()
+
+        active_session.start_break(start_time)
+        return active_session

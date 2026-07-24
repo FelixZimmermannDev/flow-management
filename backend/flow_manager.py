@@ -1,7 +1,8 @@
+from backend.work_day import WorkDay
 
 
 class FlowManager:
 
     def __init__(self):
-        pass
 
+        self.work_days: list[WorkDay] = []
