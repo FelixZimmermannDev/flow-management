@@ -39,7 +39,7 @@ class WorkDay:
         active_session.set_end(end_time)
         return active_session
 
-    def start_break(self, start_time: datetime) -> WorkSession:
+    def start_break(self, break_start_time: datetime) -> WorkSession:
         active_session: WorkSession | None = None
 
         for stored_session in self.work_sessions:
@@ -50,7 +50,7 @@ class WorkDay:
         if active_session is None:
             raise NoActiveSessionError()
 
-        active_session.start_break(start_time)
+        active_session.start_break(break_start_time)
         return active_session
 
     def resume_work(self, work_start_time: datetime) -> WorkSession:
