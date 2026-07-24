@@ -7,7 +7,7 @@ from backend.exceptions import (
     EndBeforeStartError,
     NoActiveSessionError,
 )
-from backend.time_period import BreakPeriod
+from backend.time_period import BreakPeriod, WorkPeriod
 from backend.work_day import WorkDay
 from backend.work_session import WorkSession
 
@@ -104,3 +104,29 @@ def test_start_break_rejects_ended_session_and_keeps_it_unchanged():
     assert work_day.work_sessions == [session]
     assert session.end_time == session_end_time
     assert session.active_period is None
+
+
+def test_resume_work_resumes_active_session_and_returns_it():
+    work_day = WorkDay(date(2026, 7, 20))
+    session = work_day.start_session(datetime(2026, 7, 20, 9, 0))
+    work_day.start_break(datetime(2026, 7, 20, 10, 0))
+    original_break_period = session.active_period
+    work_start_time = datetime(2026, 7, 20, 10, 15)
+
+    resumed_session = work_day.resume_work(work_start_time)
+
+    assert resumed_session is session
+    assert original_break_period is not None
+    assert original_break_period.end_time == work_start_time
+    assert isinstance(session.active_period, WorkPeriod)
+    assert session.end_time is None
+    assert work_day.work_sessions == [session]
+
+
+def test_resume_work_rejects_missing_active_session_and_keeps_work_day_empty():
+    work_day = WorkDay(date(2026, 7, 20))
+
+    with pytest.raises(NoActiveSessionError):
+        work_day.resume_work(datetime(2026, 7, 20, 10, 15))
+
+    assert work_day.work_sessions == []
