@@ -23,6 +23,7 @@
 - Before implementation, clarify the required inputs, state read, state changed or returned, invalid situations, and what must remain unchanged.
 - When materially useful alternatives exist, present their main trade-offs and recommend one proportional default.
 - Choose implementation involvement by learning value: Felix contributes the behavior model for new core domain behavior; the agent may implement boilerplate, familiar patterns, or a complete translation of the agreed model.
+- For learning-zone domain code, prefer explicit step-by-step control flow and descriptive intermediate variables over compact expressions when this materially improves traceability; avoid verbosity that only repeats the syntax.
 - After implementation, verify understanding with one proportionate active check. Do not turn routine work into a quiz.
 - Use type annotations on public domain APIs and keep mutation of inputs and domain state explicit.
 
