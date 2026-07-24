@@ -59,3 +59,4 @@ class WorkSession:
 
         self.end_time = end_time
         self.active_period = None
+
