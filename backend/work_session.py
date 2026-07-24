@@ -24,10 +24,12 @@ class WorkSession:
 
     # Break
     def start_break(self, break_start_time: datetime) -> None:
-        if not isinstance(self.active_period, WorkPeriod):
+        current_period = self.active_period
+
+        if not isinstance(current_period, WorkPeriod):
             raise SessionStateError("A break can only start while working")
 
-        self.active_period.set_end(break_start_time)
+        current_period.set_end(break_start_time)
 
         new_break_period = BreakPeriod(break_start_time)
         self.break_periods.append(new_break_period)
@@ -36,10 +38,12 @@ class WorkSession:
 
     # Work
     def resume_work(self, work_start_time: datetime) -> None:
-        if not isinstance(self.active_period, BreakPeriod):
+        current_period = self.active_period
+
+        if not isinstance(current_period, BreakPeriod):
             raise SessionStateError("Work can only resume during a break")
 
-        self.active_period.set_end(work_start_time)
+        current_period.set_end(work_start_time)
 
         new_work_period = WorkPeriod(work_start_time)
         self.work_periods.append(new_work_period)

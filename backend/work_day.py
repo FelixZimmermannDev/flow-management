@@ -19,13 +19,19 @@ class WorkDay:
         self.work_sessions: list[WorkSession] = []
 
     def start_session(self, start_time: datetime) -> WorkSession:
-        for session in self.work_sessions:
-            if session.end_time is None:
-                raise ActiveSessionAlreadyExistsError()
+        active_session_exists = False
 
-        session = WorkSession(start_time)
-        self.work_sessions.append(session)
-        return session
+        for stored_session in self.work_sessions:
+            if stored_session.end_time is None:
+                active_session_exists = True
+                break
+
+        if active_session_exists:
+            raise ActiveSessionAlreadyExistsError()
+
+        new_session = WorkSession(start_time)
+        self.work_sessions.append(new_session)
+        return new_session
 
     def end_session(self, end_time: datetime) -> WorkSession:
         active_session = None
