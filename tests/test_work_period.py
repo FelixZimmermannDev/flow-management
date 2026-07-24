@@ -2,11 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from backend.time_period import (
-    EndBeforeStartError,
-    PeriodAlreadyEndedError,
-    WorkPeriod,
-)
+from backend.exceptions import EndBeforeStartError, PeriodAlreadyEndedError
+from backend.time_period import WorkPeriod
 
 
 def test_work_period_starts_open_at_given_time():

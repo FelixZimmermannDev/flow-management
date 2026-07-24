@@ -1,16 +1,8 @@
 from datetime import date, datetime
+
+from backend.exceptions import ActiveSessionAlreadyExistsError, NoActiveSessionError
 from backend.work_session import WorkSession
 
-class WorkDayStateError(Exception):
-    pass
-
-class ActiveSessionAlreadyExistsError(WorkDayStateError):
-    def __init__(self) -> None:
-        super().__init__("An active session already exists")
-
-class NoActiveSession(WorkDayStateError):
-    def __init__(self) -> None:
-        super().__init__("No active session exists")
 
 class WorkDay:
 
@@ -42,7 +34,7 @@ class WorkDay:
                 break
 
         if active_session is None:
-            raise NoActiveSession()
+            raise NoActiveSessionError()
 
         active_session.set_end(end_time)
         return active_session

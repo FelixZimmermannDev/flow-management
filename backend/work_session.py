@@ -1,13 +1,13 @@
 from datetime import datetime
 
+from backend.exceptions import (
+    CannotResumeWorkError,
+    CannotStartBreakError,
+    NoActivePeriodError,
+    SessionAlreadyEndedError,
+)
 from backend.time_period import BreakPeriod, WorkPeriod
 
-class SessionStateError(Exception):
-    pass
-
-class SessionAlreadyEndedError(SessionStateError):
-    def __init__(self) -> None:
-        super().__init__("Session has already ended")
 
 class WorkSession:
 
@@ -27,7 +27,7 @@ class WorkSession:
         current_period = self.active_period
 
         if not isinstance(current_period, WorkPeriod):
-            raise SessionStateError("A break can only start while working")
+            raise CannotStartBreakError()
 
         current_period.set_end(break_start_time)
 
@@ -41,7 +41,7 @@ class WorkSession:
         current_period = self.active_period
 
         if not isinstance(current_period, BreakPeriod):
-            raise SessionStateError("Work can only resume during a break")
+            raise CannotResumeWorkError()
 
         current_period.set_end(work_start_time)
 
@@ -56,11 +56,10 @@ class WorkSession:
             raise SessionAlreadyEndedError()
 
         if self.active_period is None:
-            raise SessionStateError("Session has no active period")
+            raise NoActivePeriodError()
 
         final_period = self.active_period
         final_period.set_end(end_time)
 
         self.end_time = end_time
         self.active_period = None
-

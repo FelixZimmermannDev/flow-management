@@ -2,8 +2,12 @@ from datetime import date, datetime
 
 import pytest
 
-from backend.time_period import EndBeforeStartError
-from backend.work_day import ActiveSessionAlreadyExistsError, NoActiveSession, WorkDay
+from backend.exceptions import (
+    ActiveSessionAlreadyExistsError,
+    EndBeforeStartError,
+    NoActiveSessionError,
+)
+from backend.work_day import WorkDay
 from backend.work_session import WorkSession
 
 
@@ -50,7 +54,7 @@ def test_end_session_ends_active_session_and_returns_it():
 def test_end_session_rejects_missing_active_session_and_keeps_work_day_empty():
     work_day = WorkDay(date(2026, 7, 20))
 
-    with pytest.raises(NoActiveSession):
+    with pytest.raises(NoActiveSessionError):
         work_day.end_session(datetime(2026, 7, 20, 17, 0))
 
     assert work_day.work_sessions == []

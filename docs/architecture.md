@@ -8,6 +8,7 @@ Flow Management is a local Python application for tracking work time as work day
 
 ## Currently implemented domain model
 
+- `backend.exceptions` owns the domain exception hierarchy and all domain error messages. Domain modules raise specific imported exceptions instead of constructing messages inline.
 - `WorkPeriod` and `BreakPeriod` store a start time and an optional end time. They reject a second end and an end before the start.
 - `WorkSession` starts with an active `WorkPeriod` and owns its work periods and break periods.
 - `WorkSession.start_break()` and `WorkSession.resume_work()` close the active period, create the next period, store it, and make it active.
