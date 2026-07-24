@@ -32,7 +32,7 @@ class WorkDay:
 
     def end_session(self, end_time: datetime) -> WorkSession:
         for session in self.work_sessions:
-            if session.end_time is not None:
+            if session.end_time is None:
                 session.set_end(end_time)
                 return session
 
